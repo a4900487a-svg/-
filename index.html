@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>升學資訊站</title>
+<title>平鎮高中升學專區</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Nunito:wght@800;900&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -589,8 +589,8 @@ body {
 <aside class="sidebar" id="sidebar">
   <!-- Logo 固定頂部 -->
   <div class="sidebar-logo">
-    <div class="logo-badge">🎓 升學站</div>
-    <div class="sidebar-subtitle">College Info Portal</div>
+    <div class="logo-badge">🎓 平鎮高中升學專區</div>
+    <div class="sidebar-subtitle">平鎮高中 · 升學輔導專區</div>
   </div>
 
   <!-- 首頁按鈕 -->
@@ -620,22 +620,8 @@ body {
         </div>
         <span class="chevron">▶</span>
       </div>
-      <div class="nav-dropdown">
-        <div class="nav-item" onclick="filterBy('category','繁星推薦'); setActiveItem(this)">
-          <span class="nav-item-dot"></span>繁星推薦
-        </div>
-        <div class="nav-item" onclick="filterBy('category','個人申請'); setActiveItem(this)">
-          <span class="nav-item-dot"></span>個人申請
-        </div>
-        <div class="nav-item" onclick="filterBy('category','術科考試'); setActiveItem(this)">
-          <span class="nav-item-dot"></span>術科考試
-        </div>
-        <div class="nav-item" onclick="filterBy('category','分發入學'); setActiveItem(this)">
-          <span class="nav-item-dot"></span>分發入學
-        </div>
-        <div class="nav-item" onclick="filterBy('category','軍警院校'); setActiveItem(this)">
-          <span class="nav-item-dot"></span>軍警院校
-        </div>
+      <div class="nav-dropdown" id="pathwayList">
+        <div style="padding:8px 22px 8px 62px;font-size:12px;color:rgba(255,255,255,0.3);">載入中…</div>
       </div>
     </div>
 
@@ -647,19 +633,21 @@ body {
         </div>
         <span class="chevron">▶</span>
       </div>
-      <div class="nav-dropdown">
-        <div class="nav-item" onclick="filterBy('category','學測'); setActiveItem(this)">
-          <span class="nav-item-dot"></span>學科能力測驗
+      <div class="nav-dropdown" id="examList">
+        <div style="padding:8px 22px 8px 62px;font-size:12px;color:rgba(255,255,255,0.3);">載入中…</div>
+      </div>
+    </div>
+
+    <!-- 心理測驗線上施測 -->
+    <div class="nav-section" id="sec-psych">
+      <div class="nav-section-header" onclick="toggleSection('psych')">
+        <div class="nav-section-label">
+          <div class="nav-icon icon-pink">🧠</div>心理測驗線上施測
         </div>
-        <div class="nav-item" onclick="filterBy('category','分科測驗'); setActiveItem(this)">
-          <span class="nav-item-dot"></span>分科學力測驗
-        </div>
-        <div class="nav-item" onclick="filterBy('category','英聽'); setActiveItem(this)">
-          <span class="nav-item-dot"></span>英語聽力測驗
-        </div>
-        <div class="nav-item" onclick="filterBy('category','重要日期'); setActiveItem(this)">
-          <span class="nav-item-dot"></span>重要時程與截止日
-        </div>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="nav-dropdown" id="psychLinkList">
+        <div style="padding:8px 22px 8px 62px;font-size:12px;color:rgba(255,255,255,0.3);">載入中…</div>
       </div>
     </div>
 
@@ -685,6 +673,20 @@ body {
       <div style="color:rgba(255,255,255,0.3);font-size:12px;padding:8px 0;">載入中…</div>
     </div>
   </div>
+  <!-- 底部快速連結 -->
+  <div style="padding:12px 16px 20px;border-top:1px solid rgba(255,255,255,0.08);flex-shrink:0;">
+    <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">🔗 快速連結</div>
+    <a href="https://dept.pjhs.tyc.edu.tw/DEPT/PJEA/" target="_blank" style="display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:8px;background:rgba(255,255,255,0.05);margin-bottom:6px;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+      <span style="font-size:15px;">🕐</span>
+      <span style="font-size:12px;color:rgba(255,255,255,0.7);font-weight:500;">舊版升學網站</span>
+      <span style="margin-left:auto;font-size:9px;font-weight:700;background:rgba(105,160,240,0.4);color:#fff;padding:2px 6px;border-radius:4px;">舊版</span>
+    </a>
+    <a href="https://www.pjhs.tyc.edu.tw/" target="_blank" style="display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:8px;background:rgba(255,255,255,0.05);text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+      <span style="font-size:15px;">🏫</span>
+      <span style="font-size:12px;color:rgba(255,255,255,0.7);font-weight:500;">平鎮高中首頁</span>
+      <span style="margin-left:auto;font-size:9px;font-weight:700;background:rgba(105,240,143,0.4);color:#fff;padding:2px 6px;border-radius:4px;">官網</span>
+    </a>
+  </div>
   </div><!-- end sidebar-scroll -->
 </aside>
 
@@ -694,7 +696,7 @@ body {
   <!-- TOPBAR -->
   <div class="topbar">
     <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
-    <div class="topbar-title">升學資訊站 <span>·</span> 公告查詢</div>
+    <div class="topbar-title">平鎮高中升學專區 <span>·</span> 公告查詢</div>
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
       <input type="text" id="searchInput" placeholder="搜尋公告、學校、關鍵字…" oninput="renderAll()">
@@ -775,7 +777,8 @@ body {
       <strong>📌 重要：試算表需設為「知道連結的人都能檢視」</strong><br>
       Sheets → 右上角「共用」→「知道連結的人」→「檢視者」<br><br>
       <strong>欄位格式（第一列為標題）：</strong><br>
-      標題 ｜ 分類 ｜ 標籤（最新/重要/緊急） ｜ 日期 ｜ 發布單位 ｜ 內容說明 ｜ 相關連結
+      標題 ｜ 分類 ｜ 標籤（最新/重要/緊急） ｜ 日期 ｜ 發布單位 ｜ 內容說明 ｜ 相關連結<br><br>
+      <strong>其他分頁：</strong>「文件區」「網站連結」「心理測驗」（欄位：名稱｜網址）
     </div>
 
     <label>切換到其他試算表（選填，留空使用目前已設定的）</label>
@@ -1059,16 +1062,43 @@ function loadFromAppsScript(url) {
   });
 }
 
-// 解析回傳資料（相容舊格式 array 與新格式 {announcements, docs, links}）
+// 解析回傳資料
 function parseSheetResponse(data) {
   if (Array.isArray(data)) {
-    return { announcements: data, docs: [], links: [] };
+    return { announcements: data, docs: [], links: [], psychLinks: [], menuSettings: [] };
   }
   return {
     announcements: data.announcements || [],
     docs: data.docs || [],
-    links: data.links || []
+    links: data.links || [],
+    psychLinks: data.psychLinks || [],
+    menuSettings: data.menuSettings || []
   };
+}
+
+// 渲染選單設定（升學管道 & 考試相關）
+function renderMenuSettings(settings) {
+  const pathway = settings.filter(d => String(d['區塊']).trim() === '升學管道');
+  const exam    = settings.filter(d => String(d['區塊']).trim() === '考試相關');
+
+  function buildItems(list, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    if (!list || list.length === 0) {
+      container.innerHTML = `<div style="padding:8px 22px 8px 62px;font-size:12px;color:rgba(255,255,255,0.3);">尚無項目</div>`;
+      return;
+    }
+    container.innerHTML = list.map(d => {
+      const name = String(d['子項目名稱'] || '').trim();
+      const code = String(d['分類代碼'] || name).trim();
+      return `<div class="nav-item" onclick="filterBy('category','${code}'); setActiveItem(this)">
+        <span class="nav-item-dot"></span>${name}
+      </div>`;
+    }).join('');
+  }
+
+  buildItems(pathway, 'pathwayList');
+  buildItems(exam, 'examList');
 }
 
 // 渲染文件區
@@ -1092,9 +1122,10 @@ function renderDocs(docs) {
   }).join('');
 }
 
-// 渲染左側「大學與學系相關網站」
-function renderLinks(links) {
-  const container = document.getElementById('schoolLinkList');
+// 渲染指定 container 的連結清單（通用）
+function renderNavLinks(containerId, links) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
   if (!links || links.length === 0) {
     container.innerHTML = `<div style="padding:8px 22px 8px 62px;font-size:12px;color:rgba(255,255,255,0.3);">尚無連結</div>`;
     return;
@@ -1102,12 +1133,14 @@ function renderLinks(links) {
   container.innerHTML = links.map(d => {
     const url  = String(d['網址'] || '').trim();
     const name = String(d['名稱'] || '').trim();
-    return `
-    <div class="nav-item" onclick="openDoc('${url}'); setActiveItem(this)">
+    return `<div class="nav-item" onclick="openDoc('${url}'); setActiveItem(this)">
       <span class="nav-item-dot"></span>${name}
     </div>`;
   }).join('');
 }
+
+function renderLinks(links) { renderNavLinks('schoolLinkList', links); }
+function renderPsychLinks(links) { renderNavLinks('psychLinkList', links); }
 
 async function fetchAllData(url) {
   let raw;
@@ -1126,10 +1159,12 @@ async function loadSheetData() {
   document.getElementById('content').innerHTML = `<div class="loading-wrap"><div class="ldot"></div><div class="ldot"></div><div class="ldot"></div></div>`;
   closeSheetOverlayDirect();
   try {
-    const { announcements, docs, links } = await fetchAllData(url);
+    const { announcements, docs, links, psychLinks, menuSettings } = await fetchAllData(url);
     allData = announcements.filter(d => d['標題']);
     renderDocs(docs);
     renderLinks(links);
+    renderPsychLinks(psychLinks);
+    renderMenuSettings(menuSettings);
     if (allData.length === 0) {
       document.getElementById('content').innerHTML = `<div class="empty-state"><div class="empty-emoji">📭</div><h3>試算表目前沒有資料</h3><p>請在 Google Sheets 填入公告內容後重新整理</p><br><button onclick="loadDemo()" style="padding:8px 20px;background:var(--primary);color:#fff;border:none;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">改用示範資料</button></div>`;
       return;
@@ -1150,6 +1185,21 @@ function loadDemo() {
     { 名稱:'ColleGo! 大學選才平台', 網址:'https://collego.edu.tw' },
     { 名稱:'大學問', 網址:'https://www.daXue.tw' },
   ]);
+  renderPsychLinks([
+    { 名稱:'大考中心興趣量表', 網址:'https://www.ceec.edu.tw' },
+    { 名稱:'生涯探索系統 UCAN', 網址:'https://ucan.moe.edu.tw' },
+  ]);
+  renderMenuSettings([
+    { 區塊:'升學管道', 子項目名稱:'繁星推薦', 分類代碼:'繁星推薦' },
+    { 區塊:'升學管道', 子項目名稱:'個人申請', 分類代碼:'個人申請' },
+    { 區塊:'升學管道', 子項目名稱:'術科考試', 分類代碼:'術科考試' },
+    { 區塊:'升學管道', 子項目名稱:'分發入學', 分類代碼:'分發入學' },
+    { 區塊:'升學管道', 子項目名稱:'軍警院校', 分類代碼:'軍警院校' },
+    { 區塊:'考試相關', 子項目名稱:'學科能力測驗', 分類代碼:'學測' },
+    { 區塊:'考試相關', 子項目名稱:'分科學力測驗', 分類代碼:'分科測驗' },
+    { 區塊:'考試相關', 子項目名稱:'英語聽力測驗', 分類代碼:'英聽' },
+    { 區塊:'考試相關', 子項目名稱:'重要時程與截止日', 分類代碼:'重要日期' },
+  ]);
   renderAll();
 }
 
@@ -1157,10 +1207,12 @@ function loadDemo() {
 (async () => {
   document.getElementById('content').innerHTML = `<div class="loading-wrap"><div class="ldot"></div><div class="ldot"></div><div class="ldot"></div></div>`;
   try {
-    const { announcements, docs, links } = await fetchAllData(APPS_SCRIPT_URL);
+    const { announcements, docs, links, psychLinks, menuSettings } = await fetchAllData(APPS_SCRIPT_URL);
     allData = announcements.filter(d => d['標題']);
     renderDocs(docs);
     renderLinks(links);
+    renderPsychLinks(psychLinks);
+    renderMenuSettings(menuSettings);
     if (allData.length === 0) loadDemo();
     else renderAll();
   } catch(e) {
