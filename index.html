@@ -477,6 +477,43 @@ body {
 }
 .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
 
+/* === PASSWORD MODAL === */
+.pwd-overlay {
+  position: fixed; inset: 0; z-index: 400;
+  background: rgba(14,58,61,0.75);
+  backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.pwd-overlay.open { opacity: 1; pointer-events: all; }
+.pwd-modal {
+  background: #fff; border-radius: 20px;
+  max-width: 380px; width: 100%;
+  padding: 32px;
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
+  text-align: center;
+}
+.pwd-overlay.open .pwd-modal { transform: none; }
+.pwd-lock { font-size: 42px; margin-bottom: 12px; }
+.pwd-modal h2 { font-size: 18px; font-weight: 900; color: var(--text); margin-bottom: 6px; }
+.pwd-modal p { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+.pwd-input {
+  width: 100%; padding: 12px 16px;
+  border: 2px solid var(--border); border-radius: 10px;
+  font-size: 15px; font-family: "Noto Sans TC", sans-serif;
+  outline: none; margin-bottom: 8px; color: var(--text);
+  text-align: center; letter-spacing: 3px;
+  transition: border 0.2s;
+}
+.pwd-input:focus { border-color: var(--primary); }
+.pwd-error {
+  font-size: 12px; color: #e64980; margin-bottom: 12px;
+  min-height: 18px; font-weight: 700;
+}
+.pwd-btns { display: flex; gap: 8px; }
+
 /* === SHEET CONFIG MODAL === */
 .sheet-overlay {
   position: fixed; inset: 0; z-index: 300;
@@ -708,6 +745,22 @@ body {
         <button class="btn-primary" id="modalLinkBtn" onclick="openModalLink()">前往相關連結 →</button>
         <button class="btn-outline" onclick="closeOverlayDirect()">關閉</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PASSWORD MODAL ========== -->
+<div class="pwd-overlay" id="pwdOverlay">
+  <div class="pwd-modal">
+    <div class="pwd-lock">🔐</div>
+    <h2>管理員驗證</h2>
+    <p>請輸入密碼以進入資料來源設定</p>
+    <input class="pwd-input" type="password" id="pwdInput" placeholder="輸入密碼"
+      onkeydown="if(event.key==='Enter') checkPwd()">
+    <div class="pwd-error" id="pwdError"></div>
+    <div class="pwd-btns">
+      <button class="btn-primary" onclick="checkPwd()">確認</button>
+      <button class="btn-outline" onclick="closePwd()">取消</button>
     </div>
   </div>
 </div>
@@ -952,7 +1005,35 @@ function openDoc(url) { if (url && url !== '#') window.open(url,'_blank'); }
 // 你的 Google Apps Script 網址（已內建）
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwIVrzX7xhPu_jkks5Swa-J1v8OP6Bwn8KLzu1koD31BUYVbkv77ZfK5pAljJGvcwfMjQ/exec';
 
-function openSheetConfig() { document.getElementById('sheetOverlay').classList.add('open'); }
+// ========== PASSWORD ==========
+const ADMIN_PWD = 'PJHSguidance0325';
+
+function openSheetConfig() {
+  // 先開密碼驗證
+  document.getElementById('pwdInput').value = '';
+  document.getElementById('pwdError').textContent = '';
+  document.getElementById('pwdOverlay').classList.add('open');
+  setTimeout(() => document.getElementById('pwdInput').focus(), 300);
+}
+
+function checkPwd() {
+  const val = document.getElementById('pwdInput').value;
+  if (val === ADMIN_PWD) {
+    document.getElementById('pwdOverlay').classList.remove('open');
+    document.getElementById('sheetOverlay').classList.add('open');
+    document.getElementById('pwdError').textContent = '';
+  } else {
+    document.getElementById('pwdError').textContent = '❌ 密碼錯誤，請再試一次';
+    document.getElementById('pwdInput').value = '';
+    document.getElementById('pwdInput').focus();
+  }
+}
+
+function closePwd() {
+  document.getElementById('pwdOverlay').classList.remove('open');
+  document.getElementById('pwdInput').value = '';
+  document.getElementById('pwdError').textContent = '';
+}
 function closeSheetOverlay(e) { if (e.target === document.getElementById('sheetOverlay')) closeSheetOverlayDirect(); }
 function closeSheetOverlayDirect() { document.getElementById('sheetOverlay').classList.remove('open'); }
 
