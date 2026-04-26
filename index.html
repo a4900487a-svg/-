@@ -477,16 +477,19 @@ body {
 }
 .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
 
-/* === PASSWORD MODAL === */
-.pwd-overlay {
-  position: fixed; inset: 0; z-index: 400;
+/* === ADMIN MODALS (動態建立，不內嵌 HTML) === */
+.pwd-overlay,
+.sheet-overlay {
+  position: fixed; inset: 0;
   background: rgba(14,58,61,0.75);
   backdrop-filter: blur(6px);
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
   opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  z-index: 400;
 }
-.pwd-overlay.open { opacity: 1; pointer-events: all; }
+.pwd-overlay.open,
+.sheet-overlay.open { opacity: 1; pointer-events: all; z-index: 400; }
 .pwd-modal {
   background: #fff; border-radius: 20px;
   max-width: 380px; width: 100%;
@@ -513,17 +516,6 @@ body {
   min-height: 18px; font-weight: 700;
 }
 .pwd-btns { display: flex; gap: 8px; }
-
-/* === SHEET CONFIG MODAL === */
-.sheet-overlay {
-  position: fixed; inset: 0; z-index: 300;
-  background: rgba(14,58,61,0.7);
-  backdrop-filter: blur(4px);
-  display: flex; align-items: center; justify-content: center;
-  padding: 20px;
-  opacity: 0; pointer-events: none; transition: opacity 0.3s;
-}
-.sheet-overlay.open { opacity: 1; pointer-events: all; }
 .sheet-modal {
   background: #fff; border-radius: 20px;
   max-width: 520px; width: 100%;
@@ -705,7 +697,6 @@ body {
       <button class="vbtn active" id="vbtn-list" onclick="setView('list')" title="列表">☰</button>
       <button class="vbtn" id="vbtn-card" onclick="setView('card')" title="卡片">⊞</button>
     </div>
-    <button class="sheet-btn" onclick="openSheetConfig()">⚙️ 資料來源</button>
   </div>
 
   <!-- BREADCRUMB -->
@@ -751,46 +742,6 @@ body {
   </div>
 </div>
 
-<!-- ========== PASSWORD MODAL ========== -->
-<div class="pwd-overlay" id="pwdOverlay">
-  <div class="pwd-modal">
-    <div class="pwd-lock">🔐</div>
-    <h2>管理員驗證</h2>
-    <p>請輸入密碼以進入資料來源設定</p>
-    <input class="pwd-input" type="password" id="pwdInput" placeholder="輸入密碼"
-      onkeydown="if(event.key==='Enter') checkPwd()">
-    <div class="pwd-error" id="pwdError"></div>
-    <div class="pwd-btns">
-      <button class="btn-primary" onclick="checkPwd()">確認</button>
-      <button class="btn-outline" onclick="closePwd()">取消</button>
-    </div>
-  </div>
-</div>
-
-<!-- ========== SHEET CONFIG MODAL ========== -->
-<div class="sheet-overlay" id="sheetOverlay" onclick="closeSheetOverlay(event)">
-  <div class="sheet-modal">
-    <h2>⚙️ 設定 Google Sheets 資料來源</h2>
-    <p>網站已內建你的試算表，直接更新 Sheets 內容即可同步。<br>如需切換到其他試算表，請貼上新的 Sheets 網址。</p>
-
-    <div class="sheet-note">
-      <strong>📌 重要：試算表需設為「知道連結的人都能檢視」</strong><br>
-      Sheets → 右上角「共用」→「知道連結的人」→「檢視者」<br><br>
-      <strong>欄位格式（第一列為標題）：</strong><br>
-      標題 ｜ 分類 ｜ 標籤（最新/重要/緊急） ｜ 日期 ｜ 發布單位 ｜ 內容說明 ｜ 相關連結<br><br>
-      <strong>其他分頁：</strong>「文件區」「網站連結」「心理測驗」（欄位：名稱｜網址）
-    </div>
-
-    <label>切換到其他試算表（選填，留空使用目前已設定的）</label>
-    <input type="text" id="sheetUrlInput" placeholder="https://docs.google.com/spreadsheets/d/...">
-
-    <div class="sheet-btns">
-      <button class="btn-primary" onclick="loadSheetData()">載入資料</button>
-      <button class="btn-outline" onclick="loadDemo(); closeSheetOverlayDirect()">使用示範資料</button>
-      <button class="btn-outline" onclick="closeSheetOverlayDirect()">取消</button>
-    </div>
-  </div>
-</div>
 
 <script>
 // ========== DATA ==========
@@ -1008,20 +959,79 @@ function openDoc(url) { if (url && url !== '#') window.open(url,'_blank'); }
 // 你的 Google Apps Script 網址（已內建）
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwIVrzX7xhPu_jkks5Swa-J1v8OP6Bwn8KLzu1koD31BUYVbkv77ZfK5pAljJGvcwfMjQ/exec';
 
-// ========== PASSWORD ==========
-const ADMIN_PWD = 'PJHSguidance0325';
+// ========== PASSWORD (SHA-256 雜湊，非明文) ==========
+const ADMIN_PWD_HASH = '4b5e26b5aef3a4d490d04ffcea8c8ea402b4997f2679c6221c26f3c94e90ecf9';
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// 動態建立管理員 UI（不內嵌於 HTML，透過 Ctrl+Shift+A 觸發）
+function buildAdminUI() {
+  if (document.getElementById('pwdOverlay')) return;
+
+  const pwdOverlay = document.createElement('div');
+  pwdOverlay.className = 'pwd-overlay';
+  pwdOverlay.id = 'pwdOverlay';
+  pwdOverlay.innerHTML = `
+    <div class="pwd-modal">
+      <div class="pwd-lock">🔐</div>
+      <h2>管理員驗證</h2>
+      <p>請輸入密碼以進入資料來源設定</p>
+      <input class="pwd-input" type="password" id="pwdInput" placeholder="輸入密碼">
+      <div class="pwd-error" id="pwdError"></div>
+      <div class="pwd-btns">
+        <button class="btn-primary" id="pwdConfirmBtn">確認</button>
+        <button class="btn-outline" id="pwdCancelBtn">取消</button>
+      </div>
+    </div>`;
+  document.body.appendChild(pwdOverlay);
+  document.getElementById('pwdInput').addEventListener('keydown', e => { if (e.key === 'Enter') checkPwd(); });
+  document.getElementById('pwdConfirmBtn').addEventListener('click', checkPwd);
+  document.getElementById('pwdCancelBtn').addEventListener('click', closePwd);
+
+  const sheetOverlay = document.createElement('div');
+  sheetOverlay.className = 'sheet-overlay';
+  sheetOverlay.id = 'sheetOverlay';
+  sheetOverlay.innerHTML = `
+    <div class="sheet-modal">
+      <h2>⚙️ 設定 Google Sheets 資料來源</h2>
+      <p>網站已內建你的試算表，直接更新 Sheets 內容即可同步。<br>如需切換到其他試算表，請貼上新的 Sheets 網址。</p>
+      <div class="sheet-note">
+        <strong>📌 重要：試算表需設為「知道連結的人都能檢視」</strong><br>
+        Sheets → 右上角「共用」→「知道連結的人」→「檢視者」<br><br>
+        <strong>欄位格式（第一列為標題）：</strong><br>
+        標題 ｜ 分類 ｜ 標籤（最新/重要/緊急） ｜ 日期 ｜ 發布單位 ｜ 內容說明 ｜ 相關連結<br><br>
+        <strong>其他分頁：</strong>「文件區」「網站連結」「心理測驗」（欄位：名稱｜網址）
+      </div>
+      <label>切換到其他試算表（選填，留空使用目前已設定的）</label>
+      <input type="text" id="sheetUrlInput" placeholder="https://docs.google.com/spreadsheets/d/...">
+      <div class="sheet-btns">
+        <button class="btn-primary" id="sheetLoadBtn">載入資料</button>
+        <button class="btn-outline" id="sheetDemoBtn">使用示範資料</button>
+        <button class="btn-outline" id="sheetCancelBtn">取消</button>
+      </div>
+    </div>`;
+  document.body.appendChild(sheetOverlay);
+  sheetOverlay.addEventListener('click', e => { if (e.target === sheetOverlay) closeSheetOverlayDirect(); });
+  document.getElementById('sheetLoadBtn').addEventListener('click', loadSheetData);
+  document.getElementById('sheetDemoBtn').addEventListener('click', () => { loadDemo(); closeSheetOverlayDirect(); });
+  document.getElementById('sheetCancelBtn').addEventListener('click', closeSheetOverlayDirect);
+}
 
 function openSheetConfig() {
-  // 先開密碼驗證
+  buildAdminUI();
   document.getElementById('pwdInput').value = '';
   document.getElementById('pwdError').textContent = '';
   document.getElementById('pwdOverlay').classList.add('open');
   setTimeout(() => document.getElementById('pwdInput').focus(), 300);
 }
 
-function checkPwd() {
+async function checkPwd() {
   const val = document.getElementById('pwdInput').value;
-  if (val === ADMIN_PWD) {
+  const hash = await sha256(val);
+  if (hash === ADMIN_PWD_HASH) {
     document.getElementById('pwdOverlay').classList.remove('open');
     document.getElementById('sheetOverlay').classList.add('open');
     document.getElementById('pwdError').textContent = '';
@@ -1037,8 +1047,12 @@ function closePwd() {
   document.getElementById('pwdInput').value = '';
   document.getElementById('pwdError').textContent = '';
 }
-function closeSheetOverlay(e) { if (e.target === document.getElementById('sheetOverlay')) closeSheetOverlayDirect(); }
 function closeSheetOverlayDirect() { document.getElementById('sheetOverlay').classList.remove('open'); }
+
+// 快捷鍵 Ctrl+Shift+A 開啟管理員設定
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey && e.shiftKey && e.key === 'A') openSheetConfig();
+});
 
 // 用 Apps Script 當橋樑載入（解決 CORS 問題）
 function loadFromAppsScript(url) {
