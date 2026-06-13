@@ -589,11 +589,11 @@ body {
 .nav-step-hdr{display:flex;align-items:center;gap:10px;padding:13px 17px 10px;border-bottom:1px solid var(--border);}
 .nav-step-icon{font-size:19px;}
 .nav-step-title{font-size:14px;font-weight:900;color:var(--text);}
-.nav-step-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:9px;padding:11px 15px 13px;}
-.nav-card{background:var(--bg);border-radius:9px;border:1.5px solid var(--border);padding:11px 13px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:block;}
+.nav-step-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:11px;padding:14px 17px 16px;}
+.nav-card{background:var(--bg);border-radius:10px;border:1.5px solid var(--border);padding:16px 16px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:block;min-height:90px;}
 .nav-card:hover{border-color:var(--primary);background:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(26,171,184,0.15);}
-.nav-card-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;}
-.nav-card-desc{font-size:11px;color:var(--muted);line-height:1.5;}
+.nav-card-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.nav-card-desc{font-size:12px;color:var(--muted);line-height:1.6;}
 .nav-step-flow{display:flex;align-items:center;gap:7px;padding:11px 15px 13px;flex-wrap:wrap;}
 .nav-flow-item{background:var(--bg);border-radius:9px;border:1.5px solid var(--border);padding:10px 13px;cursor:pointer;transition:all 0.2s;flex:1;min-width:110px;text-align:center;}
 .nav-flow-item:hover{border-color:var(--primary);background:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(26,171,184,0.15);}
@@ -761,15 +761,15 @@ body {
         <div class="nav-step-cards">
           <div class="nav-card" onclick="navTo('考招制度', 'exam')">
             <div class="nav-card-title">考招制度</div>
-            <div class="nav-card-desc">大學考招說明與時程規劃</div>
+            <div class="nav-card-desc">大學考招說明與時程規劃<br><span style="color:var(--primary);font-weight:700;">→ 請見左側：考試相關</span></div>
           </div>
           <div class="nav-card" onclick="navTo('學群探索', 'psych')">
             <div class="nav-card-title">學群探索</div>
-            <div class="nav-card-desc">18學群介紹、各式測驗</div>
+            <div class="nav-card-desc">18學群介紹、各式測驗<br><span style="color:var(--primary);font-weight:700;">→ 請見左側：學群探索與心理測驗</span></div>
           </div>
           <div class="nav-card" onclick="navTo('升學輔導', 'pathway')">
             <div class="nav-card-title">升學輔導資源</div>
-            <div class="nav-card-desc">輔導老師諮詢、升學講座資訊</div>
+            <div class="nav-card-desc">輔導老師諮詢、升學講座資訊<br><span style="color:var(--primary);font-weight:700;">→ 請見左側：升學管道</span></div>
           </div>
         </div>
       </div>
@@ -784,19 +784,19 @@ body {
           <div class="nav-flow-item" onclick="navTo('繁星推薦', 'pathway')">
             <div class="nav-flow-num">1. 繁星推薦</div>
             <div class="nav-flow-title">繁星推薦</div>
-            <div class="nav-flow-desc">著重在校成績（每年3月）</div>
+            <div class="nav-flow-desc">著重在校成績（每年3月）<br><span style="color:var(--primary);font-weight:700;">→ 左側：升學管道</span></div>
           </div>
           <span class="nav-flow-arrow">→</span>
           <div class="nav-flow-item" onclick="navTo('個人申請', 'pathway')">
             <div class="nav-flow-num">2. 個人申請</div>
             <div class="nav-flow-title">個人申請</div>
-            <div class="nav-flow-desc">採計學測與學習歷程（每年3-5月）</div>
+            <div class="nav-flow-desc">採計學測與學習歷程（每年3-5月）<br><span style="color:var(--primary);font-weight:700;">→ 左側：升學管道</span></div>
           </div>
           <span class="nav-flow-arrow">→</span>
           <div class="nav-flow-item" onclick="navTo('考試分發', 'pathway')">
             <div class="nav-flow-num">3. 考試分發</div>
             <div class="nav-flow-title">考試分發</div>
-            <div class="nav-flow-desc">採計分科測驗成績（每年7-8月）</div>
+            <div class="nav-flow-desc">採計分科測驗成績（每年7-8月）<br><span style="color:var(--primary);font-weight:700;">→ 左側：升學管道</span></div>
           </div>
         </div>
       </div>
@@ -810,19 +810,19 @@ body {
         <div class="nav-step-cards">
           <div class="nav-card" onclick="navTo('術科考試', 'pathway')">
             <div class="nav-card-title">術科考試</div>
-            <div class="nav-card-desc">音樂、美術、體育等藝能科考試</div>
+            <div class="nav-card-desc">音樂、美術、體育等藝能科考試<br><span style="color:var(--primary);font-weight:700;">→ 請見左側：升學管道</span></div>
           </div>
           <div class="nav-card" onclick="navTo('軍警院校', 'pathway')">
             <div class="nav-card-title">軍警院校</div>
-            <div class="nav-card-desc">軍事校院及警察大學招生資訊</div>
+            <div class="nav-card-desc">軍事校院及警察大學招生資訊<br><span style="color:var(--primary);font-weight:700;">→ 請見左側：升學管道</span></div>
           </div>
           <div class="nav-card" onclick="navTo('四技申請', 'pathway')">
             <div class="nav-card-title">四技申請</div>
-            <div class="nav-card-desc">高中生申請科技大學專屬管道</div>
+            <div class="nav-card-desc">高中生申請科技大學專屬管道<br><span style="color:var(--primary);font-weight:700;">→ 請見左側：升學管道</span></div>
           </div>
           <div class="nav-card" onclick="navTo('其他', 'pathway')">
             <div class="nav-card-title">其他特殊管道</div>
-            <div class="nav-card-desc">特殊選才、運動績優等管道</div>
+            <div class="nav-card-desc">特殊選才、運動績優等管道<br><span style="color:var(--primary);font-weight:700;">→ 請見左側：升學管道</span></div>
           </div>
         </div>
       </div>
@@ -836,15 +836,15 @@ body {
         <div class="nav-step-cards">
           <div class="nav-card" onclick="navTo('學測', 'exam')">
             <div class="nav-card-title">學科能力測驗（學測）</div>
-            <div class="nav-card-desc">國文、英文、數A、數B、社會、自然</div>
+            <div class="nav-card-desc">國文、英文、數A、數B、社會、自然<br><span style="color:var(--primary);font-weight:700;">→ 請見左側：考試相關</span></div>
           </div>
           <div class="nav-card" onclick="navTo('分科測驗', 'exam')">
             <div class="nav-card-title">分科測驗</div>
-            <div class="nav-card-desc">每年7月舉行，考試分發使用</div>
+            <div class="nav-card-desc">每年7月舉行，考試分發使用<br><span style="color:var(--primary);font-weight:700;">→ 請見左側：考試相關</span></div>
           </div>
           <div class="nav-card" onclick="navTo('重要日期', 'exam')">
             <div class="nav-card-title">重要日程彙整</div>
-            <div class="nav-card-desc">各管道關鍵時程一覽</div>
+            <div class="nav-card-desc">各管道關鍵時程一覽<br><span style="color:var(--primary);font-weight:700;">→ 請見左側：考試相關</span></div>
           </div>
         </div>
       </div>
