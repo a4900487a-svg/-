@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>平鎮高中 升學輔導專區</title>
+<title>平鎮高中升學專區</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Nunito:wght@800;900&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -477,19 +477,16 @@ body {
 }
 .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
 
-/* === ADMIN MODALS (動態建立，不內嵌 HTML) === */
-.pwd-overlay,
-.sheet-overlay {
-  position: fixed; inset: 0;
+/* === PASSWORD MODAL === */
+.pwd-overlay {
+  position: fixed; inset: 0; z-index: 400;
   background: rgba(14,58,61,0.75);
   backdrop-filter: blur(6px);
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
   opacity: 0; pointer-events: none; transition: opacity 0.3s;
-  z-index: 400;
 }
-.pwd-overlay.open,
-.sheet-overlay.open { opacity: 1; pointer-events: all; z-index: 400; }
+.pwd-overlay.open { opacity: 1; pointer-events: all; }
 .pwd-modal {
   background: #fff; border-radius: 20px;
   max-width: 380px; width: 100%;
@@ -516,6 +513,17 @@ body {
   min-height: 18px; font-weight: 700;
 }
 .pwd-btns { display: flex; gap: 8px; }
+
+/* === SHEET CONFIG MODAL === */
+.sheet-overlay {
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(14,58,61,0.7);
+  backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.sheet-overlay.open { opacity: 1; pointer-events: all; }
 .sheet-modal {
   background: #fff; border-radius: 20px;
   max-width: 520px; width: 100%;
@@ -570,6 +578,37 @@ body {
   .breadcrumb { padding: 14px 16px 0; }
   .modal-grid { grid-template-columns: 1fr; }
 }
+
+/* ===== 升學導航地圖 ===== */
+.nav-map-wrap{padding:18px 24px 0;}
+.nav-map-header{text-align:center;margin-bottom:18px;}
+.nav-map-header h2{font-size:21px;font-weight:900;color:var(--text);margin-bottom:5px;}
+.nav-map-header p{font-size:13px;color:var(--muted);}
+.nav-map-steps{display:flex;flex-direction:column;gap:13px;margin-bottom:18px;}
+.nav-step{background:#fff;border-radius:13px;border:1.5px solid var(--border);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+.nav-step-hdr{display:flex;align-items:center;gap:10px;padding:13px 17px 10px;border-bottom:1px solid var(--border);}
+.nav-step-icon{font-size:19px;}
+.nav-step-title{font-size:14px;font-weight:900;color:var(--text);}
+.nav-step-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:9px;padding:11px 15px 13px;}
+.nav-card{background:var(--bg);border-radius:9px;border:1.5px solid var(--border);padding:11px 13px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:block;}
+.nav-card:hover{border-color:var(--primary);background:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(26,171,184,0.15);}
+.nav-card-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.nav-card-desc{font-size:11px;color:var(--muted);line-height:1.5;}
+.nav-step-flow{display:flex;align-items:center;gap:7px;padding:11px 15px 13px;flex-wrap:wrap;}
+.nav-flow-item{background:var(--bg);border-radius:9px;border:1.5px solid var(--border);padding:10px 13px;cursor:pointer;transition:all 0.2s;flex:1;min-width:110px;text-align:center;}
+.nav-flow-item:hover{border-color:var(--primary);background:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(26,171,184,0.15);}
+.nav-flow-num{font-size:10px;font-weight:700;color:var(--primary);margin-bottom:3px;}
+.nav-flow-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;}
+.nav-flow-desc{font-size:10px;color:var(--muted);}
+.nav-flow-arrow{font-size:16px;color:#ccc;flex-shrink:0;}
+.step-blue .nav-step-hdr{background:#EFF6FF;} .step-blue .nav-step-title{color:#1D4ED8;}
+.step-teal .nav-step-hdr{background:#F0FDFA;} .step-teal .nav-step-title{color:#0F766E;}
+.step-purple .nav-step-hdr{background:#FAF5FF;} .step-purple .nav-step-title{color:#7C3AED;}
+.step-orange .nav-step-hdr{background:#FFF7ED;} .step-orange .nav-step-title{color:#C2410C;}
+.nav-map-divider{display:flex;align-items:center;gap:12px;margin-bottom:10px;padding:0 2px;}
+.nav-map-divider-line{flex:1;height:1px;background:var(--border);}
+.nav-map-divider-text{font-size:13px;font-weight:700;color:var(--muted);white-space:nowrap;}
+
 </style>
 </head>
 <body>
@@ -581,28 +620,19 @@ body {
 <aside class="sidebar" id="sidebar">
   <!-- Logo 固定頂部 -->
   <div class="sidebar-logo">
-    <div class="logo-badge">🎓 平鎮高中 升學輔導專區</div>
+    <div class="logo-badge">🎓 平鎮高中升學專區</div>
     <div class="sidebar-subtitle">平鎮高中 · 升學輔導專區</div>
   </div>
 
   <!-- 首頁按鈕 -->
   <div class="home-btn" onclick="goHome()">
     <span class="home-btn-icon">🏠</span>
-    <span class="home-btn-text">回首頁（所有公告）</span>
+    <span class="home-btn-text">回首頁</span>
   </div>
 
   <!-- 可上下滑動的區域 -->
   <div class="sidebar-scroll">
   <nav class="sidebar-nav">
-
-    <!-- 所有公告 -->
-    <div class="nav-section" id="sec-all">
-      <div class="nav-section-header" onclick="filterBy('all',''); setActiveHeader(this)">
-        <div class="nav-section-label">
-          <div class="nav-icon icon-purple">📋</div>所有公告
-        </div>
-      </div>
-    </div>
 
     <!-- 升學管道 -->
     <div class="nav-section open" id="sec-pathway">
@@ -630,11 +660,11 @@ body {
       </div>
     </div>
 
-    <!-- 心理測驗線上施測 -->
+    <!-- 學群探索與心理測驗 -->
     <div class="nav-section" id="sec-psych">
       <div class="nav-section-header" onclick="toggleSection('psych')">
         <div class="nav-section-label">
-          <div class="nav-icon icon-pink">🧠</div>心理測驗線上施測
+          <div class="nav-icon icon-pink">🧠</div>學群探索與心理測驗
         </div>
         <span class="chevron">▶</span>
       </div>
@@ -688,7 +718,7 @@ body {
   <!-- TOPBAR -->
   <div class="topbar">
     <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
-    <div class="topbar-title">平鎮高中 升學輔導專區 <span>·</span> 公告查詢</div>
+    <div class="topbar-title">平鎮高中升學專區 <span>·</span> 公告查詢</div>
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
       <input type="text" id="searchInput" placeholder="搜尋公告、學校、關鍵字…" oninput="renderAll()">
@@ -697,6 +727,7 @@ body {
       <button class="vbtn active" id="vbtn-list" onclick="setView('list')" title="列表">☰</button>
       <button class="vbtn" id="vbtn-card" onclick="setView('card')" title="卡片">⊞</button>
     </div>
+    <button class="sheet-btn" onclick="openSheetConfig()">⚙️ 資料來源</button>
   </div>
 
   <!-- BREADCRUMB -->
@@ -713,8 +744,122 @@ body {
     <div class="result-count" id="resultCount"></div>
   </div>
 
+  <!-- 升學導航地圖 -->
+  <div class="nav-map-wrap" id="navMap">
+    <div class="nav-map-header">
+      <h2>🎓 平鎮高中升學導航地圖</h2>
+      <p>不論你想走哪一條路，這裡都有指引。請依你的階段選擇資訊：</p>
+    </div>
+    <div class="nav-map-steps">
+
+      <!-- 第一步 -->
+      <div class="nav-step step-blue">
+        <div class="nav-step-hdr">
+          <span class="nav-step-icon">🔍</span>
+          <span class="nav-step-title">第一步：認識考招制度（基礎必看）</span>
+        </div>
+        <div class="nav-step-cards">
+          <div class="nav-card" onclick="navTo('考招制度', 'exam')">
+            <div class="nav-card-title">考招制度</div>
+            <div class="nav-card-desc">大學考招說明與時程規劃</div>
+          </div>
+          <div class="nav-card" onclick="navTo('學群探索', 'psych')">
+            <div class="nav-card-title">學群探索</div>
+            <div class="nav-card-desc">18學群介紹、各式測驗</div>
+          </div>
+          <div class="nav-card" onclick="navTo('升學輔導', 'pathway')">
+            <div class="nav-card-title">升學輔導資源</div>
+            <div class="nav-card-desc">輔導老師諮詢、升學講座資訊</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 第二步 -->
+      <div class="nav-step step-teal">
+        <div class="nav-step-hdr">
+          <span class="nav-step-icon">🗺️</span>
+          <span class="nav-step-title">第二步：主要升學管道（依時程排序）</span>
+        </div>
+        <div class="nav-step-flow">
+          <div class="nav-flow-item" onclick="navTo('繁星推薦', 'pathway')">
+            <div class="nav-flow-num">1. 繁星推薦</div>
+            <div class="nav-flow-title">繁星推薦</div>
+            <div class="nav-flow-desc">著重在校成績（每年3月）</div>
+          </div>
+          <span class="nav-flow-arrow">→</span>
+          <div class="nav-flow-item" onclick="navTo('個人申請', 'pathway')">
+            <div class="nav-flow-num">2. 個人申請</div>
+            <div class="nav-flow-title">個人申請</div>
+            <div class="nav-flow-desc">採計學測與學習歷程（每年3-5月）</div>
+          </div>
+          <span class="nav-flow-arrow">→</span>
+          <div class="nav-flow-item" onclick="navTo('考試分發', 'pathway')">
+            <div class="nav-flow-num">3. 考試分發</div>
+            <div class="nav-flow-title">考試分發</div>
+            <div class="nav-flow-desc">採計分科測驗成績（每年7-8月）</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 第三步 -->
+      <div class="nav-step step-purple">
+        <div class="nav-step-hdr">
+          <span class="nav-step-icon">🎯</span>
+          <span class="nav-step-title">第三步：多元特色與技職管道</span>
+        </div>
+        <div class="nav-step-cards">
+          <div class="nav-card" onclick="navTo('術科考試', 'pathway')">
+            <div class="nav-card-title">術科考試</div>
+            <div class="nav-card-desc">音樂、美術、體育等藝能科考試</div>
+          </div>
+          <div class="nav-card" onclick="navTo('軍警院校', 'pathway')">
+            <div class="nav-card-title">軍警院校</div>
+            <div class="nav-card-desc">軍事校院及警察大學招生資訊</div>
+          </div>
+          <div class="nav-card" onclick="navTo('四技申請', 'pathway')">
+            <div class="nav-card-title">四技申請</div>
+            <div class="nav-card-desc">高中生申請科技大學專屬管道</div>
+          </div>
+          <div class="nav-card" onclick="navTo('其他', 'pathway')">
+            <div class="nav-card-title">其他特殊管道</div>
+            <div class="nav-card-desc">特殊選才、運動績優等管道</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 考試資訊 -->
+      <div class="nav-step step-orange">
+        <div class="nav-step-hdr">
+          <span class="nav-step-icon">📝</span>
+          <span class="nav-step-title">考試時程與重要資訊</span>
+        </div>
+        <div class="nav-step-cards">
+          <div class="nav-card" onclick="navTo('學測', 'exam')">
+            <div class="nav-card-title">學科能力測驗（學測）</div>
+            <div class="nav-card-desc">國文、英文、數A、數B、社會、自然</div>
+          </div>
+          <div class="nav-card" onclick="navTo('分科測驗', 'exam')">
+            <div class="nav-card-title">分科測驗</div>
+            <div class="nav-card-desc">每年7月舉行，考試分發使用</div>
+          </div>
+          <div class="nav-card" onclick="navTo('重要日期', 'exam')">
+            <div class="nav-card-title">重要日程彙整</div>
+            <div class="nav-card-desc">各管道關鍵時程一覽</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="nav-map-divider">
+      <div class="nav-map-divider-line"></div>
+      <div class="nav-map-divider-text">📢 最新公告</div>
+      <div class="nav-map-divider-line"></div>
+    </div>
+  </div>
+
   <!-- CONTENT -->
-  <div class="content" id="content">
+  <div class="content" id="content" style="padding-top:0;">
     <div class="loading-wrap">
       <div class="ldot"></div><div class="ldot"></div><div class="ldot"></div>
     </div>
@@ -742,6 +887,46 @@ body {
   </div>
 </div>
 
+<!-- ========== PASSWORD MODAL ========== -->
+<div class="pwd-overlay" id="pwdOverlay">
+  <div class="pwd-modal">
+    <div class="pwd-lock">🔐</div>
+    <h2>管理員驗證</h2>
+    <p>請輸入密碼以進入資料來源設定</p>
+    <input class="pwd-input" type="password" id="pwdInput" placeholder="輸入密碼"
+      onkeydown="if(event.key==='Enter') checkPwd()">
+    <div class="pwd-error" id="pwdError"></div>
+    <div class="pwd-btns">
+      <button class="btn-primary" onclick="checkPwd()">確認</button>
+      <button class="btn-outline" onclick="closePwd()">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SHEET CONFIG MODAL ========== -->
+<div class="sheet-overlay" id="sheetOverlay" onclick="closeSheetOverlay(event)">
+  <div class="sheet-modal">
+    <h2>⚙️ 設定 Google Sheets 資料來源</h2>
+    <p>網站已內建你的試算表，直接更新 Sheets 內容即可同步。<br>如需切換到其他試算表，請貼上新的 Sheets 網址。</p>
+
+    <div class="sheet-note">
+      <strong>📌 重要：試算表需設為「知道連結的人都能檢視」</strong><br>
+      Sheets → 右上角「共用」→「知道連結的人」→「檢視者」<br><br>
+      <strong>欄位格式（第一列為標題）：</strong><br>
+      標題 ｜ 分類 ｜ 標籤（最新/重要/緊急） ｜ 日期 ｜ 發布單位 ｜ 內容說明 ｜ 相關連結<br><br>
+      <strong>其他分頁：</strong>「文件區」「網站連結」「心理測驗」（欄位：名稱｜網址）
+    </div>
+
+    <label>切換到其他試算表（選填，留空使用目前已設定的）</label>
+    <input type="text" id="sheetUrlInput" placeholder="https://docs.google.com/spreadsheets/d/...">
+
+    <div class="sheet-btns">
+      <button class="btn-primary" onclick="loadSheetData()">載入資料</button>
+      <button class="btn-outline" onclick="loadDemo(); closeSheetOverlayDirect()">使用示範資料</button>
+      <button class="btn-outline" onclick="closeSheetOverlayDirect()">取消</button>
+    </div>
+  </div>
+</div>
 
 <script>
 // ========== DATA ==========
@@ -817,6 +1002,45 @@ function setTagFilter(tag) {
   tagFilter = tag;
   document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
   document.querySelector(`.chip[data-tag="${tag}"]`).classList.add('active');
+  renderAll();
+}
+
+function navTo(cat, sidebarSection) {
+  // 隱藏導航地圖
+  const navMap = document.getElementById('navMap');
+  if (navMap) navMap.style.display = 'none';
+
+  // 設定篩選
+  currentFilter = { type: 'category', value: cat };
+  document.getElementById('breadcrumb-current').textContent = cat;
+
+  // 清除所有 active
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  document.querySelectorAll('.nav-section-header').forEach(h => h.classList.remove('active'));
+
+  // 展開並 highlight 對應側邊欄區塊
+  if (sidebarSection) {
+    const sec = document.getElementById('sec-' + sidebarSection);
+    if (sec && !sec.classList.contains('open')) {
+      sec.classList.add('open');
+    }
+    // 找到對應的 nav-item 並 highlight
+    const items = document.querySelectorAll('.nav-item');
+    items.forEach(item => {
+      if (item.textContent.trim() === cat || item.textContent.includes(cat)) {
+        item.classList.add('active');
+      }
+    });
+  }
+
+  renderAll();
+  document.getElementById('content').scrollIntoView({ behavior: 'smooth' });
+}
+
+function showNavMap() {
+  document.getElementById('navMap').style.display = 'block';
+  currentFilter = '';
+  document.getElementById('breadcrumb-current').textContent = '所有公告';
   renderAll();
 }
 
@@ -940,6 +1164,9 @@ function goHome() {
   document.querySelectorAll(".nav-section-header").forEach(h => h.classList.remove("active"));
   document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
   document.querySelector(".chip[data-tag=\"全部\"]").classList.add("active");
+  // 顯示導航地圖
+  const navMap = document.getElementById('navMap');
+  if (navMap) navMap.style.display = 'block';
   renderAll();
   window.scrollTo({ top: 0, behavior: "smooth" });
   const scroll = document.querySelector(".sidebar-scroll");
@@ -959,79 +1186,20 @@ function openDoc(url) { if (url && url !== '#') window.open(url,'_blank'); }
 // 你的 Google Apps Script 網址（已內建）
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwIVrzX7xhPu_jkks5Swa-J1v8OP6Bwn8KLzu1koD31BUYVbkv77ZfK5pAljJGvcwfMjQ/exec';
 
-// ========== PASSWORD (SHA-256 雜湊，非明文) ==========
-const ADMIN_PWD_HASH = '4b5e26b5aef3a4d490d04ffcea8c8ea402b4997f2679c6221c26f3c94e90ecf9';
-
-async function sha256(str) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
-// 動態建立管理員 UI（不內嵌於 HTML，透過 Ctrl+Shift+A 觸發）
-function buildAdminUI() {
-  if (document.getElementById('pwdOverlay')) return;
-
-  const pwdOverlay = document.createElement('div');
-  pwdOverlay.className = 'pwd-overlay';
-  pwdOverlay.id = 'pwdOverlay';
-  pwdOverlay.innerHTML = `
-    <div class="pwd-modal">
-      <div class="pwd-lock">🔐</div>
-      <h2>管理員驗證</h2>
-      <p>請輸入密碼以進入資料來源設定</p>
-      <input class="pwd-input" type="password" id="pwdInput" placeholder="輸入密碼">
-      <div class="pwd-error" id="pwdError"></div>
-      <div class="pwd-btns">
-        <button class="btn-primary" id="pwdConfirmBtn">確認</button>
-        <button class="btn-outline" id="pwdCancelBtn">取消</button>
-      </div>
-    </div>`;
-  document.body.appendChild(pwdOverlay);
-  document.getElementById('pwdInput').addEventListener('keydown', e => { if (e.key === 'Enter') checkPwd(); });
-  document.getElementById('pwdConfirmBtn').addEventListener('click', checkPwd);
-  document.getElementById('pwdCancelBtn').addEventListener('click', closePwd);
-
-  const sheetOverlay = document.createElement('div');
-  sheetOverlay.className = 'sheet-overlay';
-  sheetOverlay.id = 'sheetOverlay';
-  sheetOverlay.innerHTML = `
-    <div class="sheet-modal">
-      <h2>⚙️ 設定 Google Sheets 資料來源</h2>
-      <p>網站已內建你的試算表，直接更新 Sheets 內容即可同步。<br>如需切換到其他試算表，請貼上新的 Sheets 網址。</p>
-      <div class="sheet-note">
-        <strong>📌 重要：試算表需設為「知道連結的人都能檢視」</strong><br>
-        Sheets → 右上角「共用」→「知道連結的人」→「檢視者」<br><br>
-        <strong>欄位格式（第一列為標題）：</strong><br>
-        標題 ｜ 分類 ｜ 標籤（最新/重要/緊急） ｜ 日期 ｜ 發布單位 ｜ 內容說明 ｜ 相關連結<br><br>
-        <strong>其他分頁：</strong>「文件區」「網站連結」「心理測驗」（欄位：名稱｜網址）
-      </div>
-      <label>切換到其他試算表（選填，留空使用目前已設定的）</label>
-      <input type="text" id="sheetUrlInput" placeholder="https://docs.google.com/spreadsheets/d/...">
-      <div class="sheet-btns">
-        <button class="btn-primary" id="sheetLoadBtn">載入資料</button>
-        <button class="btn-outline" id="sheetDemoBtn">使用示範資料</button>
-        <button class="btn-outline" id="sheetCancelBtn">取消</button>
-      </div>
-    </div>`;
-  document.body.appendChild(sheetOverlay);
-  sheetOverlay.addEventListener('click', e => { if (e.target === sheetOverlay) closeSheetOverlayDirect(); });
-  document.getElementById('sheetLoadBtn').addEventListener('click', loadSheetData);
-  document.getElementById('sheetDemoBtn').addEventListener('click', () => { loadDemo(); closeSheetOverlayDirect(); });
-  document.getElementById('sheetCancelBtn').addEventListener('click', closeSheetOverlayDirect);
-}
+// ========== PASSWORD ==========
+const ADMIN_PWD = 'PJHSguidance0325';
 
 function openSheetConfig() {
-  buildAdminUI();
+  // 先開密碼驗證
   document.getElementById('pwdInput').value = '';
   document.getElementById('pwdError').textContent = '';
   document.getElementById('pwdOverlay').classList.add('open');
   setTimeout(() => document.getElementById('pwdInput').focus(), 300);
 }
 
-async function checkPwd() {
+function checkPwd() {
   const val = document.getElementById('pwdInput').value;
-  const hash = await sha256(val);
-  if (hash === ADMIN_PWD_HASH) {
+  if (val === ADMIN_PWD) {
     document.getElementById('pwdOverlay').classList.remove('open');
     document.getElementById('sheetOverlay').classList.add('open');
     document.getElementById('pwdError').textContent = '';
@@ -1047,12 +1215,8 @@ function closePwd() {
   document.getElementById('pwdInput').value = '';
   document.getElementById('pwdError').textContent = '';
 }
+function closeSheetOverlay(e) { if (e.target === document.getElementById('sheetOverlay')) closeSheetOverlayDirect(); }
 function closeSheetOverlayDirect() { document.getElementById('sheetOverlay').classList.remove('open'); }
-
-// 快捷鍵 Ctrl+Shift+A 開啟管理員設定
-document.addEventListener('keydown', e => {
-  if (e.ctrlKey && e.shiftKey && e.key === 'A') openSheetConfig();
-});
 
 // 用 Apps Script 當橋樑載入（解決 CORS 問題）
 function loadFromAppsScript(url) {
