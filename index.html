@@ -669,8 +669,13 @@ body {
         </div>
         <span class="chevron">▶</span>
       </div>
-      <div class="nav-dropdown" id="psychLinkList">
-        <div style="padding:8px 22px 8px 62px;font-size:12px;color:rgba(255,255,255,0.3);">載入中…</div>
+      <div class="nav-dropdown">
+        <div class="nav-item" onclick="filterBy('category','相關公告'); setActiveItem(this)">
+          <span class="nav-item-dot"></span>相關公告
+        </div>
+        <div id="psychLinkList">
+          <div style="padding:8px 22px 8px 62px;font-size:12px;color:rgba(255,255,255,0.3);">載入中…</div>
+        </div>
       </div>
     </div>
 
@@ -1052,13 +1057,10 @@ function navTo(cat, sidebarSection) {
     }
   }
 
-  // 「學群探索」→ 展開心理測驗區塊並滾到側邊欄，不篩選公告
+  // 「學群探索」→ 篩選「相關公告」分類，並展開心理測驗側邊欄
   if (cat === '學群探索') {
-    document.getElementById('breadcrumb-current').textContent = '學群探索與心理測驗';
-    const sec = document.getElementById('sec-psych');
-    if (sec) { sec.classList.add('open'); sec.querySelector('.nav-section-header').classList.add('active'); }
-    document.getElementById('content').scrollIntoView({ behavior: 'smooth' });
-    return;
+    cat = '相關公告';
+    sidebarSection = 'psych';
   }
 
   // 一般公告篩選
