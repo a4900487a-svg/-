@@ -589,11 +589,11 @@ body {
 .nav-step-hdr{display:flex;align-items:center;gap:10px;padding:13px 17px 10px;border-bottom:1px solid var(--border);}
 .nav-step-icon{font-size:19px;}
 .nav-step-title{font-size:14px;font-weight:900;color:var(--text);}
-.nav-step-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:11px;padding:14px 17px 16px;}
-.nav-card{background:var(--bg);border-radius:10px;border:1.5px solid var(--border);padding:16px 16px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:block;min-height:90px;}
+.nav-step-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:9px;padding:11px 15px 13px;}
+.nav-card{background:var(--bg);border-radius:9px;border:1.5px solid var(--border);padding:11px 13px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:block;}
 .nav-card:hover{border-color:var(--primary);background:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(26,171,184,0.15);}
-.nav-card-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;}
-.nav-card-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+.nav-card-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.nav-card-desc{font-size:11px;color:var(--muted);line-height:1.5;}
 .nav-step-flow{display:flex;align-items:center;gap:7px;padding:11px 15px 13px;flex-wrap:wrap;}
 .nav-flow-item{background:var(--bg);border-radius:9px;border:1.5px solid var(--border);padding:10px 13px;cursor:pointer;transition:all 0.2s;flex:1;min-width:110px;text-align:center;}
 .nav-flow-item:hover{border-color:var(--primary);background:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(26,171,184,0.15);}
@@ -608,6 +608,7 @@ body {
 .nav-map-divider{display:flex;align-items:center;gap:12px;margin-bottom:10px;padding:0 2px;}
 .nav-map-divider-line{flex:1;height:1px;background:var(--border);}
 .nav-map-divider-text{font-size:13px;font-weight:700;color:var(--muted);white-space:nowrap;}
+.nav-flow-hint{font-size:10px;color:var(--primary);margin-top:4px;font-weight:700;}
 
 </style>
 </head>
@@ -686,6 +687,19 @@ body {
       </div>
     </div>
 
+    <!-- 輔導處升學資源 -->
+    <div class="nav-section" id="sec-guidance">
+      <div class="nav-section-header" onclick="toggleSection('guidance')">
+        <div class="nav-section-label">
+          <div class="nav-icon icon-purple">🎯</div>輔導處升學資源
+        </div>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="nav-dropdown" id="guidanceList">
+        <div style="padding:8px 22px 8px 62px;font-size:12px;color:rgba(255,255,255,0.3);">載入中…</div>
+      </div>
+    </div>
+
   </nav>
 
   <!-- 文件下載區（動態載入） -->
@@ -748,7 +762,7 @@ body {
   <div class="nav-map-wrap" id="navMap">
     <div class="nav-map-header">
       <h2>🎓 平鎮高中升學導航地圖</h2>
-      <p>不論你想走哪一條路，這裡都有指引。請依你的階段選擇資訊：</p>
+      <p>不論你想走哪一條路，這裡都有指引。請依你的階段點選，查看相關公告與資訊：</p>
     </div>
     <div class="nav-map-steps">
 
@@ -758,18 +772,21 @@ body {
           <span class="nav-step-icon">🔍</span>
           <span class="nav-step-title">第一步：認識考招制度（基礎必看）</span>
         </div>
-        <div class="nav-step-cards">
-          <div class="nav-card" onclick="navTo('考招制度', 'exam')">
-            <div class="nav-card-title">考招制度</div>
-            <div class="nav-card-desc">大學考招說明與時程規劃<br><span style="color:var(--primary);font-weight:700;">→ 請見左側：考試相關</span></div>
+        <div class="nav-step-flow">
+          <div class="nav-flow-item" onclick="navTo('學測', 'exam')">
+            <div class="nav-flow-title">考招制度</div>
+            <div class="nav-flow-desc">大學考招說明與時程規劃</div>
+            <div class="nav-flow-hint">→ 考試相關</div>
           </div>
-          <div class="nav-card" onclick="navTo('學群探索', 'psych')">
-            <div class="nav-card-title">學群探索</div>
-            <div class="nav-card-desc">18學群介紹、各式測驗<br><span style="color:var(--primary);font-weight:700;">→ 請見左側：學群探索與心理測驗</span></div>
+          <div class="nav-flow-item" onclick="navTo('學群探索', 'psych')">
+            <div class="nav-flow-title">學群探索</div>
+            <div class="nav-flow-desc">18學群介紹、各式測驗</div>
+            <div class="nav-flow-hint">→ 學群探索與心理測驗</div>
           </div>
-          <div class="nav-card" onclick="navTo('升學輔導', 'pathway')">
-            <div class="nav-card-title">升學輔導資源</div>
-            <div class="nav-card-desc">輔導老師諮詢、升學講座資訊<br><span style="color:var(--primary);font-weight:700;">→ 請見左側：升學管道</span></div>
+          <div class="nav-flow-item" onclick="navTo('活動與公告', 'guidance')">
+            <div class="nav-flow-title">升學輔導資源</div>
+            <div class="nav-flow-desc">輔導處活動與公告</div>
+            <div class="nav-flow-hint">→ 輔導處升學資源</div>
           </div>
         </div>
       </div>
@@ -781,22 +798,28 @@ body {
           <span class="nav-step-title">第二步：主要升學管道（依時程排序）</span>
         </div>
         <div class="nav-step-flow">
+          <div class="nav-flow-item" onclick="navTo('特殊選才', 'pathway')">
+            <div class="nav-flow-num">9-10月</div>
+            <div class="nav-flow-title">特殊選才</div>
+            <div class="nav-flow-desc">具特殊才能或背景的學生專屬管道</div>
+          </div>
+          <span class="nav-flow-arrow">→</span>
           <div class="nav-flow-item" onclick="navTo('繁星推薦', 'pathway')">
-            <div class="nav-flow-num">1. 繁星推薦</div>
+            <div class="nav-flow-num">每年3月</div>
             <div class="nav-flow-title">繁星推薦</div>
-            <div class="nav-flow-desc">著重在校成績（每年3月）<br><span style="color:var(--primary);font-weight:700;">→ 左側：升學管道</span></div>
+            <div class="nav-flow-desc">著重在校成績表現</div>
           </div>
           <span class="nav-flow-arrow">→</span>
           <div class="nav-flow-item" onclick="navTo('個人申請', 'pathway')">
-            <div class="nav-flow-num">2. 個人申請</div>
+            <div class="nav-flow-num">每年3-5月</div>
             <div class="nav-flow-title">個人申請</div>
-            <div class="nav-flow-desc">採計學測與學習歷程（每年3-5月）<br><span style="color:var(--primary);font-weight:700;">→ 左側：升學管道</span></div>
+            <div class="nav-flow-desc">採計學測與學習歷程</div>
           </div>
           <span class="nav-flow-arrow">→</span>
-          <div class="nav-flow-item" onclick="navTo('考試分發', 'pathway')">
-            <div class="nav-flow-num">3. 考試分發</div>
+          <div class="nav-flow-item" onclick="navTo('分發入學', 'pathway')">
+            <div class="nav-flow-num">每年7-8月</div>
             <div class="nav-flow-title">考試分發</div>
-            <div class="nav-flow-desc">採計分科測驗成績（每年7-8月）<br><span style="color:var(--primary);font-weight:700;">→ 左側：升學管道</span></div>
+            <div class="nav-flow-desc">採計分科測驗成績</div>
           </div>
         </div>
       </div>
@@ -807,44 +830,51 @@ body {
           <span class="nav-step-icon">🎯</span>
           <span class="nav-step-title">第三步：多元特色與技職管道</span>
         </div>
-        <div class="nav-step-cards">
-          <div class="nav-card" onclick="navTo('術科考試', 'pathway')">
-            <div class="nav-card-title">術科考試</div>
-            <div class="nav-card-desc">音樂、美術、體育等藝能科考試<br><span style="color:var(--primary);font-weight:700;">→ 請見左側：升學管道</span></div>
+        <div class="nav-step-flow">
+          <div class="nav-flow-item" onclick="navTo('術科考試', 'pathway')">
+            <div class="nav-flow-title">術科考試</div>
+            <div class="nav-flow-desc">音樂、美術、體育等藝能科</div>
           </div>
-          <div class="nav-card" onclick="navTo('軍警院校', 'pathway')">
-            <div class="nav-card-title">軍警院校</div>
-            <div class="nav-card-desc">軍事校院及警察大學招生資訊<br><span style="color:var(--primary);font-weight:700;">→ 請見左側：升學管道</span></div>
+          <div class="nav-flow-item" onclick="navTo('軍警院校', 'pathway')">
+            <div class="nav-flow-title">軍警院校</div>
+            <div class="nav-flow-desc">軍事校院及警察大學招生</div>
           </div>
-          <div class="nav-card" onclick="navTo('四技申請', 'pathway')">
-            <div class="nav-card-title">四技申請</div>
-            <div class="nav-card-desc">高中生申請科技大學專屬管道<br><span style="color:var(--primary);font-weight:700;">→ 請見左側：升學管道</span></div>
+          <div class="nav-flow-item" onclick="navTo('四技科大', 'pathway')">
+            <div class="nav-flow-title">四技申請</div>
+            <div class="nav-flow-desc">高中生申請科技大學專屬管道</div>
           </div>
-          <div class="nav-card" onclick="navTo('其他', 'pathway')">
-            <div class="nav-card-title">其他特殊管道</div>
-            <div class="nav-card-desc">特殊選才、運動績優等管道<br><span style="color:var(--primary);font-weight:700;">→ 請見左側：升學管道</span></div>
+          <div class="nav-flow-item" onclick="navTo('其他', 'pathway')">
+            <div class="nav-flow-title">其他特殊管道</div>
+            <div class="nav-flow-desc">運動績優、身心障礙、原住民等</div>
           </div>
         </div>
       </div>
 
-      <!-- 考試資訊 -->
+      <!-- 考試時程 -->
       <div class="nav-step step-orange">
         <div class="nav-step-hdr">
           <span class="nav-step-icon">📝</span>
           <span class="nav-step-title">考試時程與重要資訊</span>
         </div>
-        <div class="nav-step-cards">
-          <div class="nav-card" onclick="navTo('學測', 'exam')">
-            <div class="nav-card-title">學科能力測驗（學測）</div>
-            <div class="nav-card-desc">國文、英文、數A、數B、社會、自然<br><span style="color:var(--primary);font-weight:700;">→ 請見左側：考試相關</span></div>
+        <div class="nav-step-flow">
+          <div class="nav-flow-item" onclick="navTo('學測', 'exam')">
+            <div class="nav-flow-num">每年1月</div>
+            <div class="nav-flow-title">學科能力測驗</div>
+            <div class="nav-flow-desc">國文、英文、數A、數B、社會、自然</div>
           </div>
-          <div class="nav-card" onclick="navTo('分科測驗', 'exam')">
-            <div class="nav-card-title">分科測驗</div>
-            <div class="nav-card-desc">每年7月舉行，考試分發使用<br><span style="color:var(--primary);font-weight:700;">→ 請見左側：考試相關</span></div>
+          <div class="nav-flow-item" onclick="navTo('分科', 'exam')">
+            <div class="nav-flow-num">每年7月</div>
+            <div class="nav-flow-title">分科測驗</div>
+            <div class="nav-flow-desc">考試分發入學使用</div>
           </div>
-          <div class="nav-card" onclick="navTo('重要日期', 'exam')">
-            <div class="nav-card-title">重要日程彙整</div>
-            <div class="nav-card-desc">各管道關鍵時程一覽<br><span style="color:var(--primary);font-weight:700;">→ 請見左側：考試相關</span></div>
+          <div class="nav-flow-item" onclick="navTo('英聽', 'exam')">
+            <div class="nav-flow-num">每年1月</div>
+            <div class="nav-flow-title">英語聽力測驗</div>
+            <div class="nav-flow-desc">個人申請採計參考</div>
+          </div>
+          <div class="nav-flow-item" onclick="navTo('重要日期', 'exam')">
+            <div class="nav-flow-title">重要時程彙整</div>
+            <div class="nav-flow-desc">各管道關鍵截止日一覽</div>
           </div>
         </div>
       </div>
@@ -858,7 +888,7 @@ body {
     </div>
   </div>
 
-  <!-- CONTENT -->
+    <!-- CONTENT -->
   <div class="content" id="content" style="padding-top:0;">
     <div class="loading-wrap">
       <div class="ldot"></div><div class="ldot"></div><div class="ldot"></div>
@@ -1010,28 +1040,38 @@ function navTo(cat, sidebarSection) {
   const navMap = document.getElementById('navMap');
   if (navMap) navMap.style.display = 'none';
 
-  // 設定篩選
-  currentFilter = { type: 'category', value: cat };
-  document.getElementById('breadcrumb-current').textContent = cat;
-
   // 清除所有 active
   document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
   document.querySelectorAll('.nav-section-header').forEach(h => h.classList.remove('active'));
 
-  // 展開並 highlight 對應側邊欄區塊
+  // 展開對應側邊欄區塊
   if (sidebarSection) {
     const sec = document.getElementById('sec-' + sidebarSection);
     if (sec && !sec.classList.contains('open')) {
       sec.classList.add('open');
     }
-    // 找到對應的 nav-item 並 highlight
-    const items = document.querySelectorAll('.nav-item');
-    items.forEach(item => {
-      if (item.textContent.trim() === cat || item.textContent.includes(cat)) {
-        item.classList.add('active');
-      }
-    });
   }
+
+  // 「學群探索」→ 展開心理測驗區塊並滾到側邊欄，不篩選公告
+  if (cat === '學群探索') {
+    document.getElementById('breadcrumb-current').textContent = '學群探索與心理測驗';
+    const sec = document.getElementById('sec-psych');
+    if (sec) { sec.classList.add('open'); sec.querySelector('.nav-section-header').classList.add('active'); }
+    document.getElementById('content').scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+
+  // 一般公告篩選
+  currentFilter = { type: 'category', value: cat };
+  document.getElementById('breadcrumb-current').textContent = cat;
+
+  // Highlight 對應 nav-item
+  document.querySelectorAll('.nav-item').forEach(item => {
+    const itemText = item.textContent.trim();
+    if (itemText === cat || item.getAttribute('onclick') && item.getAttribute('onclick').includes("'" + cat + "'")) {
+      item.classList.add('active');
+    }
+  });
 
   renderAll();
   document.getElementById('content').scrollIntoView({ behavior: 'smooth' });
@@ -1256,8 +1296,9 @@ function parseSheetResponse(data) {
 
 // 渲染選單設定（升學管道 & 考試相關）
 function renderMenuSettings(settings) {
-  const pathway = settings.filter(d => String(d['區塊']).trim() === '升學管道');
-  const exam    = settings.filter(d => String(d['區塊']).trim() === '考試相關');
+  const pathway  = settings.filter(d => String(d['區塊']).trim() === '升學管道');
+  const exam     = settings.filter(d => String(d['區塊']).trim() === '考試相關');
+  const guidance = settings.filter(d => String(d['區塊']).trim() === '輔導處升學資源');
 
   function buildItems(list, containerId) {
     const container = document.getElementById(containerId);
@@ -1277,6 +1318,7 @@ function renderMenuSettings(settings) {
 
   buildItems(pathway, 'pathwayList');
   buildItems(exam, 'examList');
+  buildItems(guidance, 'guidanceList');
 }
 
 // 渲染文件區
@@ -1368,15 +1410,20 @@ function loadDemo() {
     { 名稱:'生涯探索系統 UCAN', 網址:'https://ucan.moe.edu.tw' },
   ]);
   renderMenuSettings([
+    { 區塊:'升學管道', 子項目名稱:'特殊選才', 分類代碼:'特殊選才' },
     { 區塊:'升學管道', 子項目名稱:'繁星推薦', 分類代碼:'繁星推薦' },
     { 區塊:'升學管道', 子項目名稱:'個人申請', 分類代碼:'個人申請' },
     { 區塊:'升學管道', 子項目名稱:'術科考試', 分類代碼:'術科考試' },
     { 區塊:'升學管道', 子項目名稱:'分發入學', 分類代碼:'分發入學' },
+    { 區塊:'升學管道', 子項目名稱:'四技科大', 分類代碼:'四技科大' },
     { 區塊:'升學管道', 子項目名稱:'軍警院校', 分類代碼:'軍警院校' },
+    { 區塊:'升學管道', 子項目名稱:'其他升學管道', 分類代碼:'其他' },
     { 區塊:'考試相關', 子項目名稱:'學科能力測驗', 分類代碼:'學測' },
-    { 區塊:'考試相關', 子項目名稱:'分科學力測驗', 分類代碼:'分科測驗' },
+    { 區塊:'考試相關', 子項目名稱:'分科能力測驗', 分類代碼:'分科' },
     { 區塊:'考試相關', 子項目名稱:'英語聽力測驗', 分類代碼:'英聽' },
     { 區塊:'考試相關', 子項目名稱:'重要時程與截止日', 分類代碼:'重要日期' },
+    { 區塊:'考試相關', 子項目名稱:'重要資訊', 分類代碼:'重要資訊' },
+    { 區塊:'輔導處升學資源', 子項目名稱:'活動與公告', 分類代碼:'活動與公告' },
   ]);
   renderAll();
 }
