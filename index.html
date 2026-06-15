@@ -778,7 +778,7 @@ body {
           <span class="nav-step-title">第一步：認識考招制度（基礎必看）</span>
         </div>
         <div class="nav-step-flow">
-          <div class="nav-flow-item" onclick="navTo('學測', 'exam')">
+          <div class="nav-flow-item" onclick="navToSection('exam', '考招制度')">
             <div class="nav-flow-title">考招制度</div>
             <div class="nav-flow-desc">大學考招說明與時程規劃</div>
             <div class="nav-flow-hint">→ 考試相關</div>
@@ -1018,6 +1018,10 @@ function getTagClass(tag) {
 
 // ========== FILTER & RENDER ==========
 function filterBy(type, value) {
+  // 隱藏導航地圖（僅首頁顯示）
+  const navMap = document.getElementById('navMap');
+  if (navMap) navMap.style.display = 'none';
+
   currentFilter = { type, value };
   document.getElementById('breadcrumb-current').textContent = value || '所有公告';
 
@@ -1079,6 +1083,50 @@ function navTo(cat, sidebarSection) {
   document.getElementById('content').scrollIntoView({ behavior: 'smooth' });
 }
 
+function navToSection(sectionId, label) {
+  // 隱藏導航地圖
+  const navMap = document.getElementById('navMap');
+  if (navMap) navMap.style.display = 'none';
+
+  // 展開對應側邊欄區塊
+  const sec = document.getElementById('sec-' + sectionId);
+  if (sec && !sec.classList.contains('open')) sec.classList.add('open');
+
+  // 清除 active
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  document.querySelectorAll('.nav-section-header').forEach(h => h.classList.remove('active'));
+
+  // Highlight 區塊標題
+  if (sec) {
+    const hdr = sec.querySelector('.nav-section-header');
+    if (hdr) hdr.classList.add('active');
+  }
+
+  // 篩選：顯示該區塊下所有分類的公告
+  // 收集該區塊下所有 nav-item 的分類代碼
+  const items = sec ? sec.querySelectorAll('.nav-item') : [];
+  const codes = [];
+  items.forEach(item => {
+    const onclick = item.getAttribute('onclick') || '';
+    const match = onclick.match(/filterBy\('category','([^']+)'\)/);
+    if (match) codes.push(match[1]);
+  });
+
+  if (codes.length > 0) {
+    currentFilter = { type: 'section', value: codes };
+  } else {
+    currentFilter = { type: 'all', value: '' };
+  }
+
+  document.getElementById('breadcrumb-current').textContent = label || sectionId;
+  tagFilter = '全部';
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  document.querySelector('.chip[data-tag="全部"]').classList.add('active');
+
+  renderAll();
+  document.getElementById('content').scrollIntoView({ behavior: 'smooth' });
+}
+
 function showNavMap() {
   document.getElementById('navMap').style.display = 'block';
   currentFilter = '';
@@ -1097,6 +1145,7 @@ function getFiltered() {
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
   return allData.filter(d => {
     if (currentFilter.type === 'category' && d.分類 !== currentFilter.value) return false;
+    if (currentFilter.type === 'section' && !currentFilter.value.includes(d.分類)) return false;
     if (tagFilter !== '全部' && d.標籤 !== tagFilter) return false;
     if (q && !d.標題.toLowerCase().includes(q) && !(d.內容說明||'').toLowerCase().includes(q) && !(d.分類||'').toLowerCase().includes(q)) return false;
     return true;
