@@ -873,9 +873,9 @@ body {
             <div class="nav-flow-desc">考試分發入學使用</div>
           </div>
           <div class="nav-flow-item" onclick="navTo('英聽', 'exam')">
-            <div class="nav-flow-num">每年1月</div>
+            <div class="nav-flow-num">每年10月 & 12月</div>
             <div class="nav-flow-title">英語聽力測驗</div>
-            <div class="nav-flow-desc">個人申請採計參考</div>
+            <div class="nav-flow-desc">兩次成績擇優採用，繁星、申請、分發皆可能列為檢定門檻</div>
           </div>
           <div class="nav-flow-item" onclick="navTo('重要日期', 'exam')">
             <div class="nav-flow-title">重要時程彙整</div>
@@ -1348,7 +1348,11 @@ function parseSheetResponse(data) {
 // 渲染選單設定（升學管道 & 考試相關）
 function renderMenuSettings(settings) {
   const pathway  = settings.filter(d => String(d['區塊']).trim() === '升學管道');
-  const exam     = settings.filter(d => String(d['區塊']).trim() === '考試相關');
+  const examRaw  = settings.filter(d => String(d['區塊']).trim() === '考試相關');
+  // 把「重要資訊」移到考試相關的第一個
+  const examFirst = examRaw.filter(d => String(d['子項目名稱']).trim() === '重要資訊');
+  const examRest  = examRaw.filter(d => String(d['子項目名稱']).trim() !== '重要資訊');
+  const exam = [...examFirst, ...examRest];
   const guidance = settings.filter(d => String(d['區塊']).trim() === '輔導處升學資源');
 
   function buildItems(list, containerId) {
@@ -1469,11 +1473,11 @@ function loadDemo() {
     { 區塊:'升學管道', 子項目名稱:'四技科大', 分類代碼:'四技科大' },
     { 區塊:'升學管道', 子項目名稱:'軍警院校', 分類代碼:'軍警院校' },
     { 區塊:'升學管道', 子項目名稱:'其他升學管道', 分類代碼:'其他' },
+    { 區塊:'考試相關', 子項目名稱:'重要資訊', 分類代碼:'重要資訊' },
     { 區塊:'考試相關', 子項目名稱:'學科能力測驗', 分類代碼:'學測' },
     { 區塊:'考試相關', 子項目名稱:'分科能力測驗', 分類代碼:'分科' },
     { 區塊:'考試相關', 子項目名稱:'英語聽力測驗', 分類代碼:'英聽' },
     { 區塊:'考試相關', 子項目名稱:'重要時程與截止日', 分類代碼:'重要日期' },
-    { 區塊:'考試相關', 子項目名稱:'重要資訊', 分類代碼:'重要資訊' },
     { 區塊:'輔導處升學資源', 子項目名稱:'活動與公告', 分類代碼:'活動與公告' },
   ]);
   renderAll();
