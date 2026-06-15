@@ -1141,13 +1141,27 @@ function setView(mode) {
   renderAll();
 }
 
+function getCats(d) {
+  // 支援逗號分隔的多分類，如：「繁星推薦, 個人申請, 分發入學」
+  return String(d.分類 || '').split(',').map(s => s.trim()).filter(Boolean);
+}
+
 function getFiltered() {
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
   return allData.filter(d => {
-    if (currentFilter.type === 'category' && d.分類 !== currentFilter.value) return false;
-    if (currentFilter.type === 'section' && !currentFilter.value.includes(d.分類)) return false;
+    const cats = getCats(d);
+    if (currentFilter.type === 'category') {
+      // 任一分類符合即顯示
+      if (!cats.includes(currentFilter.value)) return false;
+    }
+    if (currentFilter.type === 'section') {
+      // 任一分類在 section 的代碼清單中即顯示
+      if (!cats.some(c => currentFilter.value.includes(c))) return false;
+    }
     if (tagFilter !== '全部' && d.標籤 !== tagFilter) return false;
-    if (q && !d.標題.toLowerCase().includes(q) && !(d.內容說明||'').toLowerCase().includes(q) && !(d.分類||'').toLowerCase().includes(q)) return false;
+    if (q && !d.標題.toLowerCase().includes(q) &&
+        !(d.內容說明||'').toLowerCase().includes(q) &&
+        !(d.分類||'').toLowerCase().includes(q)) return false;
     return true;
   });
 }
