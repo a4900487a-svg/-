@@ -458,6 +458,23 @@ body {
 .tag-urgent { background: #D0F5FB; color: #0A5260; }
 .tag-normal { background: var(--bg); color: var(--muted); }
 
+/* 置頂公告 */
+.pin-badge {
+  font-size: 12px; font-weight: 700;
+  padding: 3px 10px; border-radius: 999px;
+  display: inline-flex; align-items: center; gap: 4px;
+  background: #FFE3A6; color: #8A4B00;
+  flex-shrink: 0;
+}
+.list-item.is-pinned {
+  border-color: #F0C25A;
+  background: #FFFBF0;
+}
+.card.is-pinned {
+  border-color: #F0C25A;
+  background: #FFFBF0;
+}
+
 /* CARD VIEW */
 .card-view {
   display: grid;
@@ -996,6 +1013,7 @@ body {
     </button>
     <div class="modal-inner">
       <p class="modal-kv">
+        <span id="modalPin"></span>
         <span id="modalCat" class="list-cat"></span>
         <span id="modalTag" class="list-tag"></span>
       </p>
@@ -1078,6 +1096,12 @@ function getCats(d) {
   return String(d.分類 || '').split(',').map(s => s.trim()).filter(Boolean);
 }
 
+/** 判斷這則公告是否標記為置頂（對應 Google Sheet 的「置頂」欄） */
+function isPinned(d) {
+  const v = String(d.置頂 || '').trim().toUpperCase();
+  return v === '是' || v === 'TRUE' || v === '1' || v === 'Y' || v === 'V' || v === '✓' || v === 'YES' || v === '置頂';
+}
+
 /** 清空節點內容 */
 function clear(node) { while (node.firstChild) node.removeChild(node.firstChild); }
 
@@ -1090,7 +1114,7 @@ function newWindowHint() {
 // ========== 篩選 ==========
 function getFiltered() {
   const q = $('searchInput').value.trim().toLowerCase();
-  return allData.filter(d => {
+  const list = allData.filter(d => {
     const cats = getCats(d);
     if (currentFilter.type === 'category' && !cats.includes(currentFilter.value)) return false;
     if (currentFilter.type === 'section' && !cats.some(c => currentFilter.value.includes(c))) return false;
@@ -1100,6 +1124,8 @@ function getFiltered() {
         !String(d.分類 || '').toLowerCase().includes(q)) return false;
     return true;
   });
+  // 置頂公告排到目前清單（所在分類專區）的最上方，其餘維持原本順序
+  return list.sort((a, b) => (isPinned(a) ? 0 : 1) - (isPinned(b) ? 0 : 1));
 }
 
 function setChipPressed(tag) {
@@ -1139,9 +1165,19 @@ function renderAll() {
   content.appendChild(box);
 }
 
+function buildPinBadge() {
+  const pin = el('span', 'pin-badge');
+  const icon = el('span', null, '📌');
+  icon.setAttribute('aria-hidden', 'true');
+  pin.appendChild(icon);
+  pin.appendChild(document.createTextNode('置頂'));
+  return pin;
+}
+
 function buildListItem(d, i) {
   const s = getCatStyle(getCats(d)[0]);
-  const btn = el('button', 'list-item');
+  const pinned = isPinned(d);
+  const btn = el('button', 'list-item' + (pinned ? ' is-pinned' : ''));
   btn.type = 'button';
   btn.style.animationDelay = (i * 0.04) + 's';
   btn.addEventListener('click', () => openDetail(d, btn));
@@ -1154,6 +1190,7 @@ function buildListItem(d, i) {
   btn.appendChild(el('span', 'list-title', d.標題));
 
   const meta = el('span', 'list-meta');
+  if (pinned) meta.appendChild(buildPinBadge());
   if (d.標籤) meta.appendChild(el('span', 'list-tag ' + getTagClass(d.標籤), d.標籤));
   const cat = el('span', 'list-cat', d.分類);
   cat.style.background = s.bg; cat.style.color = s.text;
@@ -1165,7 +1202,8 @@ function buildListItem(d, i) {
 
 function buildCard(d, i) {
   const s = getCatStyle(getCats(d)[0]);
-  const btn = el('button', 'card');
+  const pinned = isPinned(d);
+  const btn = el('button', 'card' + (pinned ? ' is-pinned' : ''));
   btn.type = 'button';
   btn.style.animationDelay = (i * 0.05) + 's';
   btn.addEventListener('click', () => openDetail(d, btn));
@@ -1177,9 +1215,13 @@ function buildCard(d, i) {
 
   const body = el('span', 'card-body');
   const head = el('span', 'card-head');
+  const leftGroup = el('span');
+  leftGroup.style.cssText = 'display:flex;align-items:center;gap:6px;flex-wrap:wrap;';
+  if (pinned) leftGroup.appendChild(buildPinBadge());
   const cat = el('span', 'card-cat', d.分類);
   cat.style.background = s.bg; cat.style.color = s.text;
-  head.appendChild(cat);
+  leftGroup.appendChild(cat);
+  head.appendChild(leftGroup);
   if (d.標籤) head.appendChild(el('span', 'list-tag ' + getTagClass(d.標籤), d.標籤));
   body.appendChild(head);
   body.appendChild(el('span', 'card-h', d.標題));
@@ -1203,6 +1245,10 @@ function openDetail(d, triggerEl) {
   lastFocusedEl = triggerEl || document.activeElement;
 
   $('modalStripe').style.background = s.stripe;
+
+  const pinEl = $('modalPin');
+  clear(pinEl);
+  if (isPinned(d)) pinEl.appendChild(buildPinBadge());
 
   const catEl = $('modalCat');
   catEl.textContent = d.分類 || '';
